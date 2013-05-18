@@ -15,7 +15,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class MomentTest {
     @Test
-    public void constructFromEpoch(){
+    public void constructFromEpochMilliseconds(){
         Date now = new Date();
         long epoch = now.getTime();
         Moment m = moment(epoch);
@@ -24,12 +24,19 @@ public class MomentTest {
     }
 
     @Test
+    public void constructFromEpochSeconds(){
+        Moment m = Moment.unix(237691800l);
+
+        assertEquals(237691800000l, m.toUnixEpoch());
+    }
+
+    @Test
     public void getCurrentMoment(){
         long currentEpochTimestamp = System.currentTimeMillis();
         Moment m = moment();
 
         assertTrue(m.toUnixEpoch() > 0);
-        assertTrue(m.toUnixEpoch() > currentEpochTimestamp);
+        assertTrue(m.toUnixEpoch() >= currentEpochTimestamp);
         assertTrue(m.toUnixEpoch() < Long.MAX_VALUE);
     }
 }
