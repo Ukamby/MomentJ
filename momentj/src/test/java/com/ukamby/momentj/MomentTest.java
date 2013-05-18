@@ -4,7 +4,9 @@ import org.junit.Test;
 
 import java.util.Date;
 
+import static com.ukamby.momentj.Moment.moment;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * User: luke
@@ -16,8 +18,18 @@ public class MomentTest {
     public void constructFromEpoch(){
         Date now = new Date();
         long epoch = now.getTime();
-        Moment moment = Moment.fromUnixEpoch(epoch);
+        Moment m = moment(epoch);
 
-        assertEquals(epoch, moment.toUnixEpoch());
+        assertEquals(epoch, m.toUnixEpoch());
+    }
+
+    @Test
+    public void getCurrentMoment(){
+        long currentEpochTimestamp = System.currentTimeMillis();
+        Moment m = moment();
+
+        assertTrue(m.toUnixEpoch() > 0);
+        assertTrue(m.toUnixEpoch() > currentEpochTimestamp);
+        assertTrue(m.toUnixEpoch() < Long.MAX_VALUE);
     }
 }
