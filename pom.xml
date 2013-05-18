@@ -1,0 +1,29 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.ukamby</groupId>
+    <artifactId>momentj-parent</artifactId>
+    <version>0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>momentj-parent</name>
+    <description>A Java port of the open source JavaScript library MomentJS.</description>
+    <url>ukamby.com</url>
+
+    <developers>
+        <developer>
+            <name>Adam Strickland</name>
+        </developer>
+        <developer>
+            <name>Luke Thompson</name>
+        </developer>
+        <developer>
+            <name>Ruby Boyarski</name>
+        </developer>
+    </developers>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+</project>
