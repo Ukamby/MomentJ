@@ -2,6 +2,7 @@ package com.ukamby.momentj;
 
 import org.junit.Test;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import static com.ukamby.momentj.Moment.moment;
@@ -28,6 +29,22 @@ public class MomentTest {
         Moment m = Moment.unix(237691800l);
 
         assertEquals(237691800000l, m.toUnixEpoch());
+    }
+
+    @Test
+    public void constructFromDate(){
+        Date date = new Date(2376918234321l);
+        Moment m = moment(date);
+
+        assertEquals(2376918234321l, m.toUnixEpoch());
+    }
+
+    @Test
+    public void constructFromCalendar(){
+        Calendar calendar = Calendar.getInstance();
+        Moment m = moment(calendar);
+
+        assertEquals(calendar.getTimeInMillis(), m.toUnixEpoch());
     }
 
     @Test

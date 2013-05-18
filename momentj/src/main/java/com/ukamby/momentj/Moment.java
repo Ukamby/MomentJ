@@ -1,5 +1,8 @@
 package com.ukamby.momentj;
 
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * Moment represents a moment in time.
  *
@@ -26,6 +29,26 @@ public class Moment {
     }
 
     /**
+     * Create a new moment based on a Date instance.
+     *
+     * @param date the date to base this moment on.
+     * @return A moment representing the given date.
+     */
+    public static Moment moment(Date date) {
+        return moment(date.getTime());
+    }
+
+    /**
+     * Create a new moment based on a Calendar instance.
+     *
+     * @param calendar the calendar to base this moment on.
+     * @return A moment representing the given calendar date.
+     */
+    public static Moment moment(Calendar calendar) {
+        return moment(calendar.getTimeInMillis());
+    }
+
+    /**
      * Create a new moment based on the unix epoch timestamp value in seconds (seconds since Jan 1, 1970 00:00:00 UTC).
      *
      * @param epochSeconds The number of seconds since January 1st 1970, 00:00:00.
@@ -39,7 +62,7 @@ public class Moment {
      * Get the current moment right now.
      */
     public static Moment moment(){
-        return new Moment(System.currentTimeMillis());
+        return moment(System.currentTimeMillis());
     }
 
     /**
