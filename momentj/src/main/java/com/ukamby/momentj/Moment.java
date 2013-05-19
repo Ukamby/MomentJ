@@ -71,4 +71,8 @@ public class Moment {
     public long toUnixEpoch() {
         return value;
     }
+
+    public String format(String yy) {
+        return "TODO";
+    }
 }

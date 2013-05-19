@@ -1,0 +1,114 @@
+package com.ukamby.momentj;
+
+import java.io.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+/**
+ * convert js tests to Java
+ */
+public class TestConvertor {
+
+    public static void main(String[] args) throws Exception {
+        new TestConvertor().convert();
+    }
+
+    public void convert() throws Exception {
+        //System.out.println("----------------------------------------------------------------------------------------------------------------");
+        String javaCode = prefix + "/*" + toJava() + "*/" + suffix;
+        //System.out.println(javaCode);
+        writeFile(javaCode);
+
+    }
+
+    private void writeFile(String javaCode) throws Exception {
+        File outputFile = new File("momentj/src/test/java/com/ukamby/momentj/FormatTest.java");
+        System.out.println("outputFile.getAbsolutePath() = " + outputFile.getAbsolutePath());
+        FileWriter fileWriter = new FileWriter(outputFile);
+        fileWriter.write(javaCode);
+        fileWriter.close();
+    }
+
+    public String toJava() throws Exception {
+        String jscode = getJavascriptCode();
+        //System.out.println(jscode);
+
+        // initial cleanup
+        String javaCode = jscode;
+        javaCode = javaCode.replaceAll(".*require.*\n","");
+        javaCode = javaCode.replaceAll("^\n","");
+        javaCode = javaCode.replaceAll("^.*\\{\n","");
+        javaCode = javaCode.replaceAll("\n\\};$","");
+        javaCode = javaCode.replaceAll("},(\n*\t*.*\".*\" : function\\(test\\))","}$1");
+
+        // format methods
+        Pattern pattern = Pattern.compile("\"(.*)\" : function\\(test\\) \\{");
+        Matcher matcher = pattern.matcher(javaCode);
+        StringBuffer sb = new StringBuffer();
+        while (matcher.find()) {
+            String functionName = matcher.group(1);
+            // todo: camel case
+            functionName = functionName.replaceAll(" ","");
+            String rep = "@Test\n\tpublic void " + functionName + "() {";
+            matcher.appendReplacement(sb,rep);
+            //System.out.println(rep);
+        }
+        matcher.appendTail(sb);
+        javaCode = sb.toString();
+
+        return javaCode;
+    }
+
+    private String getJavascriptCode() throws IOException {
+        File file = new File(this.getClass().getResource("/format.js").getFile());
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        String line = null;
+        StringBuilder stringBuilder = new StringBuilder();
+        while ((line = reader.readLine()) != null) {
+            stringBuilder.append(line).append("\n");
+        }
+        return stringBuilder.toString();
+    }
+
+    private static final String prefix = "package com.ukamby.momentj;\n"+
+            "\n"+
+            "import org.junit.Before;\n"+
+            "import org.junit.Test;\n"+
+            "\n"+
+            "import java.util.Date;\n"+
+            "\n"+
+            "/**\n"+
+            " * Format Tests\n"+
+            " */\n"+
+            "public class FormatTest {\n"+
+            "\n"+
+            "    private TestHelper test;\n"+
+            "\n"+
+            "    @Before\n"+
+            "    public void setup() {\n"+
+            "        test = new TestHelper();\n"+
+            "    }\n" +
+            "\n";
+
+    private static final String suffix = "\n\n\tprivate Date dateWithMilliseconds(int year, int month, int day , int hour, int minute, int second, int millisecond) {\n" +
+            "        Date date = new Date(year, month, day, hour, minute, second);\n" +
+            "        date.setTime(date.getTime() + millisecond);\n" +
+            "        return date;\n" +
+            "    }\n" +
+            "\n" +
+            "    private static class TestHelper {\n" +
+            "        public void expect(int i) {\n" +
+            "            \n" +
+            "        }\n" +
+            "\n" +
+            "        public void equal(String yy, String s, String s1) {\n" +
+            "\n" +
+            "        }\n" +
+            "\n" +
+            "        public void done() {\n" +
+            "\n" +
+            "        }\n" +
+            "    }\n" +
+            "}";
+
+}

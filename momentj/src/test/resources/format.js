@@ -1,33 +1,15 @@
-package com.ukamby.momentj;
+var moment = require("../../moment");
 
-import org.junit.Before;
-import org.junit.Test;
-
-import java.util.Date;
-
-/**
- * Format Tests
- */
-public class FormatTest {
-
-    private TestHelper test;
-
-    @Before
-    public void setup() {
-        test = new TestHelper();
-    }
-
-/*    @Test
-	public void formatYY() {
+exports.format = {
+    "format YY" : function(test) {
         test.expect(1);
 
         var b = moment(new Date(2009, 1, 14, 15, 25, 50, 125));
         test.equal(b.format('YY'), '09', 'YY ---> 09');
         test.done();
-    }
+    },
 
-    @Test
-	public void formatescapebrackets() {
+    "format escape brackets" : function(test) {
         test.expect(9);
 
         moment.lang('en');
@@ -43,10 +25,9 @@ public class FormatTest {
         test.equal(b.format('[L LL LLL LLLL aLa]'), 'L LL LLL LLLL aLa', 'localized tokens with escaped localized tokens');
         test.equal(b.format('[LLL] LLL'), 'LLL February 14 2009 3:25 PM', 'localized tokens with escaped localized tokens (recursion)');
         test.done();
-    }
+    },
 
-    @Test
-	public void formatmilliseconds() {
+    "format milliseconds" : function(test) {
         test.expect(6);
         var b = moment(new Date(2009, 1, 14, 15, 25, 50, 123));
         test.equal(b.format('S'), '1', 'Deciseconds');
@@ -57,10 +38,9 @@ public class FormatTest {
         test.equal(b.format('SS'), '78', 'Centiseconds');
         test.equal(b.format('SSS'), '789', 'Milliseconds');
         test.done();
-    }
+    },
 
-    @Test
-	public void formattimezone() {
+    "format timezone" : function(test) {
         test.expect(2);
 
         var b = moment(new Date(2010, 1, 14, 15, 25, 50, 125));
@@ -71,19 +51,17 @@ public class FormatTest {
         test.ok(b.format('Z').match(/^[\+\-]\d\d:\d\d$/), b.format('Z') + ' should be something like "+07:30"');
         test.ok(b.format('ZZ').match(/^[\+\-]\d{4}$/), b.format('ZZ') + ' should be something like "+0700"');
         test.done();
-    }
+    },
 
-    @Test
-	public void formatmultiplewithzone() {
+    "format multiple with zone" : function(test) {
         test.expect(1);
 
         var b = moment('2012-10-08 -1200', ['YYYY ZZ', 'YYYY-MM-DD ZZ']);
         test.equals(b.format('YYYY-MM'), '2012-10', 'Parsing multiple formats should not crash with different sized formats');
         test.done();
-    }
+    },
 
-    @Test
-	public void isDST() {
+    "isDST" : function(test) {
         test.expect(2);
 
         var janOffset = new Date(2011, 0, 1).getTimezoneOffset(),
@@ -107,10 +85,9 @@ public class FormatTest {
             test.ok(!jul1.isDST(), 'July 1 is not DST');
         }
         test.done();
-    }
+    },
 
-    @Test
-	public void unixtimestamp() {
+    "unix timestamp" : function(test) {
         test.expect(4);
 
         var m = moment('1234567890.123', 'X');
@@ -120,10 +97,9 @@ public class FormatTest {
         test.equals(m.format('X.SSS'), '1234567890.123', 'unix timestamp with milliseconds');
 
         test.done();
-    }
+    },
 
-    @Test
-	public void zone() {
+    "zone" : function(test) {
         test.expect(3);
 
         if (moment().zone() > 0) {
@@ -142,18 +118,16 @@ public class FormatTest {
         }
         test.equal(moment().zone(), new Date().getTimezoneOffset(), 'zone should equal getTimezoneOffset');
         test.done();
-    }
+    },
 
-    @Test
-	public void defaultformat() {
+    "default format" : function(test) {
         test.expect(1);
         var isoRegex = /\d{4}.\d\d.\d\dT\d\d.\d\d.\d\d[\+\-]\d\d:\d\d/;
         test.ok(isoRegex.exec(moment().format()), "default format (" + moment().format() + ") should match ISO");
         test.done();
-    }
+    },
 
-    @Test
-	public void escapingquotes() {
+    "escaping quotes" : function(test) {
         test.expect(4);
         moment.lang('en');
         var date = moment([2012, 0]);
@@ -162,10 +136,9 @@ public class FormatTest {
         test.equal(date.format("MMM 'YY"),  "Jan '12", "Should be able to format with single parenthesis");
         test.equal(date.format("MMM \"YY"), 'Jan "12', "Should be able to format with double parenthesis");
         test.done();
-    }
+    },
 
-    @Test
-	public void toJSON() {
+    "toJSON" : function(test) {
         var supportsJson = typeof JSON !== "undefined" && JSON.stringify && JSON.stringify.call,
             date = moment("2012-10-09T21:30:40.678+0100");
 
@@ -176,10 +149,9 @@ public class FormatTest {
             date : date
         }), '{"date":"2012-10-09T20:30:40.678Z"}', "should output ISO8601 on JSON.stringify");
         test.done();
-    }
+    },
 
-    @Test
-	public void weeksformat() {
+    "weeks format" : function(test) {
 
         // http://en.wikipedia.org/wiki/ISO_week_date
         var cases = {
@@ -207,10 +179,9 @@ public class FormatTest {
         }
 
         test.done();
-    }
+    },
 
-    @Test
-	public void isoweekyearformats() {
+    "iso week year formats" : function(test) {
 
         // http://en.wikipedia.org/wiki/ISO_week
         var cases = {
@@ -242,10 +213,9 @@ public class FormatTest {
         }
 
         test.done();
-    }
+    },
 
-    @Test
-	public void weekyearformats() {
+    "week year formats" : function(test) {
 
         // http://en.wikipedia.org/wiki/ISO_week
         var cases = {
@@ -278,10 +248,9 @@ public class FormatTest {
         }
 
         test.done();
-    }
+    },
 
-    @Test
-	public void isoweekdayformats() {
+    "iso weekday formats" : function(test) {
         test.expect(7);
 
         test.equal(moment([1985, 1,  4]).format('E'), '0', "Feb  4 1985 is Monday    -- 0th day");
@@ -293,10 +262,9 @@ public class FormatTest {
         test.equal(moment([2000, 0,  2]).format('E'), '6', "Jan  2 2000 is Sunday    -- 6th day");
 
         test.done();
-    }
+    },
 
-    @Test
-	public void weekdayformats() {
+    "weekday formats" : function(test) {
         test.expect(7);
 
         moment.lang('dow:3,doy:5', {week: {dow: 3, doy: 5}});
@@ -309,44 +277,21 @@ public class FormatTest {
         test.equal(moment([2000, 0,  4]).format('e'), '6', "Jan  4 2000 is Tuesday   -- 6th day");
 
         test.done()
-    }
+    },
 
-    @Test
-	public void toStringisjusthumanreadableformat() {
+    "toString is just human readable format" : function(test) {
         test.expect(1);
 
         var b = moment(new Date(2009, 1, 5, 15, 25, 50, 125));
         test.equal(b.toString(), b.format('ddd MMM DD YYYY HH:mm:ss [GMT]ZZ'));
         test.done();
-    }
+    },
 
-    @Test
-	public void toJSONskipspostformat() {
+    "toJSON skips postformat" : function(test) {
         test.expect(1);
 
         moment.lang('postformat', {postformat: function(s) { s.replace(/./g, 'X') }});
         test.equal(moment.utc([2000, 0, 1]).toJSON(), "2000-01-01T00:00:00.000Z", "toJSON doesn't postformat");
         test.done();
     }
-*/
-
-	private Date dateWithMilliseconds(int year, int month, int day , int hour, int minute, int second, int millisecond) {
-        Date date = new Date(year, month, day, hour, minute, second);
-        date.setTime(date.getTime() + millisecond);
-        return date;
-    }
-
-    private static class TestHelper {
-        public void expect(int i) {
-            
-        }
-
-        public void equal(String yy, String s, String s1) {
-
-        }
-
-        public void done() {
-
-        }
-    }
-}
+};
