@@ -40,6 +40,9 @@ public class TestConvertor {
         javaCode = javaCode.replaceAll("^.*\\{\n","");
         javaCode = javaCode.replaceAll("\n\\};$","");
         javaCode = javaCode.replaceAll("},(\n*\t*.*\".*\" : function\\(test\\))","}$1");
+        javaCode = javaCode.replaceAll("var","Moment");
+        javaCode = javaCode.replaceAll("'","\"");
+        javaCode = javaCode.replaceAll("new Date","dateWithMilliseconds");
 
         // format methods
         Pattern pattern = Pattern.compile("\"(.*)\" : function\\(test\\) \\{");
@@ -70,45 +73,18 @@ public class TestConvertor {
         return stringBuilder.toString();
     }
 
-    private static final String prefix = "package com.ukamby.momentj;\n"+
-            "\n"+
-            "import org.junit.Before;\n"+
-            "import org.junit.Test;\n"+
-            "\n"+
-            "import java.util.Date;\n"+
-            "\n"+
+    private static final String prefix = "package com.ukamby.momentj;\n\n" +
+            "import org.junit.Test;\n" +
+            "\n" +
+            "import java.util.Date;\n" +
+            "\n" +
+            "import static com.ukamby.momentj.Moment.moment;\n\n"+
             "/**\n"+
             " * Format Tests\n"+
             " */\n"+
-            "public class FormatTest {\n"+
-            "\n"+
-            "    private TestHelper test;\n"+
-            "\n"+
-            "    @Before\n"+
-            "    public void setup() {\n"+
-            "        test = new TestHelper();\n"+
-            "    }\n" +
+            "public class FormatTest extends JsTestBase {\n"+
             "\n";
 
-    private static final String suffix = "\n\n\tprivate Date dateWithMilliseconds(int year, int month, int day , int hour, int minute, int second, int millisecond) {\n" +
-            "        Date date = new Date(year, month, day, hour, minute, second);\n" +
-            "        date.setTime(date.getTime() + millisecond);\n" +
-            "        return date;\n" +
-            "    }\n" +
-            "\n" +
-            "    private static class TestHelper {\n" +
-            "        public void expect(int i) {\n" +
-            "            \n" +
-            "        }\n" +
-            "\n" +
-            "        public void equal(String yy, String s, String s1) {\n" +
-            "\n" +
-            "        }\n" +
-            "\n" +
-            "        public void done() {\n" +
-            "\n" +
-            "        }\n" +
-            "    }\n" +
-            "}";
+    private static final String suffix = "}";
 
 }
