@@ -4,6 +4,8 @@ import org.junit.Before;
 
 import java.util.Date;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  * User: luke
  * Date: 20/05/13
@@ -24,16 +26,22 @@ public class JsTestBase {
     }
 
     protected static class TestHelper {
-        public void expect(int i) {
+        private Integer expectedTestCount = null;
+        private int actualTestCount = 0;
 
+        public void expect(int expectedTestCount) {
+            this.expectedTestCount = expectedTestCount;
         }
 
-        public void equal(String yy, String s, String s1) {
-
+        public void equal(String actual, String expected, String message) {
+            assertEquals(message, expected, actual);
+            actualTestCount++;
         }
 
         public void done() {
-
+            if( expectedTestCount != null ){
+                assertEquals("Didn't assert expected number of test cases.", (int)expectedTestCount, actualTestCount);
+            }
         }
     }
 }
