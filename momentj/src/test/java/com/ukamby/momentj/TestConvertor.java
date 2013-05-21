@@ -40,8 +40,14 @@ public class TestConvertor {
         javaCode = javaCode.replaceAll("^.*\\{\n","");
         javaCode = javaCode.replaceAll("\n\\};$","");
         javaCode = javaCode.replaceAll("},(\n*\t*.*\".*\" : function\\(test\\))","}$1");
-        javaCode = javaCode.replaceAll("var (.*) = moment\\(","Moment $1 = moment\\(");
+
+        // todo: convert " to \" inside '...' first
+        //javaCode = javaCode.replaceAll("'(.*)\"(.*)\"(.*)'","'$1\\\\\"$2\\\\\"$3'");
         javaCode = javaCode.replaceAll("'","\"");
+
+        // variable definitions
+        javaCode = javaCode.replaceAll("var (.*) = moment\\(","Moment $1 = moment\\(");
+        javaCode = javaCode.replaceAll("var (.*) = \"","String $1 = \"");
 
         // format methods
         Pattern pattern = Pattern.compile("\"(.*)\" : function\\(test\\) \\{");
