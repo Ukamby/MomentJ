@@ -2,8 +2,6 @@ package com.ukamby.momentj;
 
 import org.junit.Test;
 
-import java.util.Date;
-
 import static com.ukamby.momentj.Moment.moment;
 
 /**
@@ -11,14 +9,14 @@ import static com.ukamby.momentj.Moment.moment;
  */
 public class FormatTest extends JsTestBase {
 
-    @Test
+/*    @Test
 	public void formatYY() {
         test.expect(1);
 
-        Moment b = moment(dateWithMilliseconds(2009, 1, 14, 15, 25, 50, 125));
+        Moment b = moment(new Date(2009, 1, 14, 15, 25, 50, 125));
         test.equal(b.format("YY"), "09", "YY ---> 09");
         test.done();
-    }/*
+    }
 
     @Test
 	public void formatescapebrackets() {
@@ -26,7 +24,7 @@ public class FormatTest extends JsTestBase {
 
         moment.lang("en");
 
-        Moment b = moment(dateWithMilliseconds(2009, 1, 14, 15, 25, 50, 125));
+        Moment b = moment(new Date(2009, 1, 14, 15, 25, 50, 125));
         test.equal(b.format("[day]"), "day", "Single bracket");
         test.equal(b.format("[day] YY [YY]"), "day 09 YY", "Double bracket");
         test.equal(b.format("[YY"), "[09", "Un-ended bracket");
@@ -42,7 +40,7 @@ public class FormatTest extends JsTestBase {
     @Test
 	public void formatmilliseconds() {
         test.expect(6);
-        Moment b = moment(dateWithMilliseconds(2009, 1, 14, 15, 25, 50, 123));
+        Moment b = moment(new Date(2009, 1, 14, 15, 25, 50, 123));
         test.equal(b.format("S"), "1", "Deciseconds");
         test.equal(b.format("SS"), "12", "Centiseconds");
         test.equal(b.format("SSS"), "123", "Milliseconds");
@@ -57,8 +55,8 @@ public class FormatTest extends JsTestBase {
 	public void formattimezone() {
         test.expect(2);
 
-        Moment b = moment(dateWithMilliseconds(2010, 1, 14, 15, 25, 50, 125));
-        Moment explanation = "moment().format("z") = " + b.format("z") + " It should be something like "PST""
+        Moment b = moment(new Date(2010, 1, 14, 15, 25, 50, 125));
+        var explanation = "moment().format("z") = " + b.format("z") + " It should be something like "PST""
         if (moment().zone() === -60) {
             explanation += "For UTC+1 this is a known issue, see https://github.com/timrwood/moment/issues/162";
         }
@@ -80,8 +78,8 @@ public class FormatTest extends JsTestBase {
 	public void isDST() {
         test.expect(2);
 
-        Moment janOffset = dateWithMilliseconds(2011, 0, 1).getTimezoneOffset(),
-            julOffset = dateWithMilliseconds(2011, 6, 1).getTimezoneOffset(),
+        var janOffset = new Date(2011, 0, 1).getTimezoneOffset(),
+            julOffset = new Date(2011, 6, 1).getTimezoneOffset(),
             janIsDst = janOffset < julOffset,
             julIsDst = julOffset < janOffset,
             jan1 = moment([2011]),
@@ -134,14 +132,14 @@ public class FormatTest extends JsTestBase {
         } else {
             test.equal(moment().zone() % 15, 0, "moment.fn.zone should be a multiple of 15 (was " + moment().zone() + ")");
         }
-        test.equal(moment().zone(), dateWithMilliseconds().getTimezoneOffset(), "zone should equal getTimezoneOffset");
+        test.equal(moment().zone(), new Date().getTimezoneOffset(), "zone should equal getTimezoneOffset");
         test.done();
     }
 
     @Test
 	public void defaultformat() {
         test.expect(1);
-        Moment isoRegex = /\d{4}.\d\d.\d\dT\d\d.\d\d.\d\d[\+\-]\d\d:\d\d/;
+        var isoRegex = /\d{4}.\d\d.\d\dT\d\d.\d\d.\d\d[\+\-]\d\d:\d\d/;
         test.ok(isoRegex.exec(moment().format()), "default format (" + moment().format() + ") should match ISO");
         test.done();
     }
@@ -160,7 +158,7 @@ public class FormatTest extends JsTestBase {
 
     @Test
 	public void toJSON() {
-        Moment supportsJson = typeof JSON !== "undefined" && JSON.stringify && JSON.stringify.call,
+        var supportsJson = typeof JSON !== "undefined" && JSON.stringify && JSON.stringify.call,
             date = moment("2012-10-09T21:30:40.678+0100");
 
         test.expect(supportsJson ? 2 : 1);
@@ -176,7 +174,7 @@ public class FormatTest extends JsTestBase {
 	public void weeksformat() {
 
         // http://en.wikipedia.org/wiki/ISO_week_date
-        Moment cases = {
+        var cases = {
             "2005-01-02": "2004-53",
             "2005-12-31": "2005-52",
             "2007-01-01": "2007-01",
@@ -194,8 +192,8 @@ public class FormatTest extends JsTestBase {
             "2010-01-03": "2009-53"
         };
 
-        for (Moment i in cases) {
-            Moment iso = cases[i].split("-").pop();
+        for (var i in cases) {
+            var iso = cases[i].split("-").pop();
             Moment the = moment(i).format("WW");
             test.equal(iso, the, i + ": should be " + iso + ", but " + the);
         }
@@ -207,7 +205,7 @@ public class FormatTest extends JsTestBase {
 	public void isoweekyearformats() {
 
         // http://en.wikipedia.org/wiki/ISO_week
-        Moment cases = {
+        var cases = {
             "2005-01-02": "2004-53",
             "2005-12-31": "2005-52",
             "2007-01-01": "2007-01",
@@ -225,8 +223,8 @@ public class FormatTest extends JsTestBase {
             "2010-01-03": "2009-53"
         };
 
-        for (Moment i in cases) {
-            Moment isoWeekYear = cases[i].split("-")[0];
+        for (var i in cases) {
+            var isoWeekYear = cases[i].split("-")[0];
             Moment formatted5 = moment(i).format("GGGGG");
             test.equal("0" + isoWeekYear, formatted5, i + ": should be " + isoWeekYear + ", but " + formatted4);
             Moment formatted4 = moment(i).format("GGGG");
@@ -242,7 +240,7 @@ public class FormatTest extends JsTestBase {
 	public void weekyearformats() {
 
         // http://en.wikipedia.org/wiki/ISO_week
-        Moment cases = {
+        var cases = {
             "2005-01-02": "2004-53",
             "2005-12-31": "2005-52",
             "2007-01-01": "2007-01",
@@ -261,8 +259,8 @@ public class FormatTest extends JsTestBase {
         };
 
         moment.lang("en-gb"); // 1, 4
-        for (Moment i in cases) {
-            Moment isoWeekYear = cases[i].split("-")[0];
+        for (var i in cases) {
+            var isoWeekYear = cases[i].split("-")[0];
             Moment formatted5 = moment(i).format("ggggg");
             test.equal("0" + isoWeekYear, formatted5, i + ": should be " + isoWeekYear + ", but " + formatted4);
             Moment formatted4 = moment(i).format("gggg");
@@ -309,7 +307,7 @@ public class FormatTest extends JsTestBase {
 	public void toStringisjusthumanreadableformat() {
         test.expect(1);
 
-        Moment b = moment(dateWithMilliseconds(2009, 1, 5, 15, 25, 50, 125));
+        Moment b = moment(new Date(2009, 1, 5, 15, 25, 50, 125));
         test.equal(b.toString(), b.format("ddd MMM DD YYYY HH:mm:ss [GMT]ZZ"));
         test.done();
     }

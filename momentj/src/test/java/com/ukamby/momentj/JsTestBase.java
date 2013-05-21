@@ -19,12 +19,6 @@ public class JsTestBase {
         test = new TestHelper();
     }
 
-    protected Date dateWithMilliseconds(int year, int month, int day, int hour, int minute, int second, int millisecond) {
-        Date date = new Date(year, month, day, hour, minute, second);
-        date.setTime(date.getTime() + millisecond);
-        return date;
-    }
-
     protected static class TestHelper {
         private Integer expectedTestCount = null;
         private int actualTestCount = 0;

@@ -40,9 +40,8 @@ public class TestConvertor {
         javaCode = javaCode.replaceAll("^.*\\{\n","");
         javaCode = javaCode.replaceAll("\n\\};$","");
         javaCode = javaCode.replaceAll("},(\n*\t*.*\".*\" : function\\(test\\))","}$1");
-        javaCode = javaCode.replaceAll("var","Moment");
+        javaCode = javaCode.replaceAll("var (.*) = moment\\(","Moment $1 = moment\\(");
         javaCode = javaCode.replaceAll("'","\"");
-        javaCode = javaCode.replaceAll("new Date","dateWithMilliseconds");
 
         // format methods
         Pattern pattern = Pattern.compile("\"(.*)\" : function\\(test\\) \\{");
@@ -75,8 +74,6 @@ public class TestConvertor {
 
     private static final String prefix = "package com.ukamby.momentj;\n\n" +
             "import org.junit.Test;\n" +
-            "\n" +
-            "import java.util.Date;\n" +
             "\n" +
             "import static com.ukamby.momentj.Moment.moment;\n\n"+
             "/**\n"+
