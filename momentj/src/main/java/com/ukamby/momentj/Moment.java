@@ -13,6 +13,8 @@ import java.util.Date;
  * Time: 5:00 PM
  */
 public class Moment {
+	public static final String VERSION = "0.1";
+	
     private long value;
     private Moment(long value) {
         this.value = value;
