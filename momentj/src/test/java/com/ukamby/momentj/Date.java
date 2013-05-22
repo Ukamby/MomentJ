@@ -32,4 +32,9 @@ public class Date extends java.util.Date{
     public Date(String s) {
         super(s);
     }
+
+    public boolean isDST() {
+        // todo
+        return false;
+    }
 }

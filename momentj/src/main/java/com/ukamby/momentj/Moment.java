@@ -2,6 +2,7 @@ package com.ukamby.momentj;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 /**
  * Moment represents a moment in time.
@@ -72,6 +73,9 @@ public class Moment {
         return value;
     }
 
+    public String lang(String yy) {
+        return "TODO";
+    }
     public String format(String yy) {
         /*
         Relevant bits of javascript to implement this function from:
@@ -423,6 +427,25 @@ public class Moment {
         });
 
         */
+        // todo
         return "TODO";
+    }
+
+    public void milliseconds(int i) {
+        // todo
+    }
+
+    public int zone() {
+        // todo
+        return 0;
+    }
+
+    public void match(Pattern regex) {
+        // todo
+    }
+
+    public boolean isDST() {
+        // todo
+        return false;
     }
 }

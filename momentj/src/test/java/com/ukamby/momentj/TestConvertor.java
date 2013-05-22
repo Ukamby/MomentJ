@@ -41,14 +41,6 @@ public class TestConvertor {
         javaCode = javaCode.replaceAll("\n\\};$","");
         javaCode = javaCode.replaceAll("},(\n*\t*.*\".*\" : function\\(test\\))","}$1");
 
-        // todo: convert " to \" inside '...' first
-        //javaCode = javaCode.replaceAll("'(.*)\"(.*)\"(.*)'","'$1\\\\\"$2\\\\\"$3'");
-        javaCode = javaCode.replaceAll("'","\"");
-
-        // variable definitions
-        javaCode = javaCode.replaceAll("var (.*) = moment\\(","Moment $1 = moment\\(");
-        javaCode = javaCode.replaceAll("var (.*) = \"","String $1 = \"");
-
         // format methods
         Pattern pattern = Pattern.compile("\"(.*)\" : function\\(test\\) \\{");
         Matcher matcher = pattern.matcher(javaCode);
@@ -63,6 +55,30 @@ public class TestConvertor {
         }
         matcher.appendTail(sb);
         javaCode = sb.toString();
+
+        // todo: convert " to \" inside '...' first
+        //javaCode = javaCode.replaceAll("'(.*)\"(.*)\"(.*)'","'$1\\\\\"$2\\\\\"$3'");
+        javaCode = javaCode.replaceAll("\"","\\\\\"");
+        javaCode = javaCode.replaceAll("'","\"");
+
+        // variable definitions
+        //------------------------------
+        // non-var cleanup
+        for (int i=0; i<20; i++) { // as many non-var declarations as there are
+            javaCode = javaCode.replaceAll("var (.*) = (.*),\n(\\s*)(\\s\\s\\s\\s)(.*) = (.*),\n","var $1 = $2;\n$3var $5 = $6,\n");
+        }
+        javaCode = javaCode.replaceAll("var (.*) = (.*),\n(\\s*)(\\s\\s\\s\\s)(.*) = (.*);\n","var $1 = $2;\n$3var $5 = $6;\n");
+        // type (var -> String,Date,etc.)
+        javaCode = javaCode.replaceAll("var (.*) = new Date\\((.*)\\.getTimezoneOffset\\(\\);","int $1 = new Date\\($2\\.getTimezoneOffset\\(\\);");
+        javaCode = javaCode.replaceAll("var (.*) = moment\\((.*).format\\((.*)\\);","String $1 = moment\\($2.format\\($3\\);");
+        javaCode = javaCode.replaceAll("var (.*) = \"","String $1 = \"");
+        javaCode = javaCode.replaceAll("var (.*) = moment\\(","Moment $1 = moment\\(");
+        javaCode = javaCode.replaceAll("var (.*) = new Date\\(","Date $1 = new Date\\(");
+        javaCode = javaCode.replaceAll("var (.*) = (.*)<(.*);","boolean $1 = $2<$3;");
+        javaCode = javaCode.replaceAll("var (.*) = /(.*)/;","Pattern $1 = Pattern.compile\\(\"$2\"\\);");
+
+        // more javascript stuff
+        javaCode = javaCode.replaceAll("===","==");
 
         return javaCode;
     }
@@ -80,6 +96,7 @@ public class TestConvertor {
 
     private static final String prefix = "package com.ukamby.momentj;\n\n" +
             "import org.junit.Test;\n" +
+            "import java.util.regex.Pattern;\n" +
             "\n" +
             "import static com.ukamby.momentj.Moment.moment;\n\n"+
             "/**\n"+
