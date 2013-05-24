@@ -450,4 +450,12 @@ public class Moment {
         // todo
         return false;
     }
+
+    public int month() {
+        return 0;  //return the month portion as an integer 0-11
+    }
+
+    public int day() {
+        return 0;  //Return the weekday portion as an integer 0-6 where 0 = Sunday
+    }
 }
