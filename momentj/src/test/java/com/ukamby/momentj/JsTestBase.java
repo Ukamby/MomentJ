@@ -27,6 +27,10 @@ public class JsTestBase {
         return null;
     }
 
+    protected Moment moment(Date date) {
+        return null;
+    }
+
     protected static class TestHelper {
         private Integer expectedTestCount = null;
         private int actualTestCount = 0;
