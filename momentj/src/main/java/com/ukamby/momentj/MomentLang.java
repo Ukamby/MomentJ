@@ -32,6 +32,8 @@ public abstract class MomentLang {
     abstract String[] getWeekdaysShort();
     abstract String[] getWeekdaysMin();
     abstract Map<String, String> getLongDateFormat();
+    abstract Map<String, String> getCalendar();
+    abstract String getMeridiem(int hours, int minutes, boolean isLower);
 
     public String months(Moment m){
         return getMonths()[m.month()];
@@ -62,45 +64,25 @@ public abstract class MomentLang {
     public String weekdaysMin(Moment m){
         return getWeekdaysMin()[m.day()];
     }
-//
-//    public String longDateFormat(String key){
-//        Map<String, String> longDateFormat = getLongDateFormat();
-//        String output = longDateFormat.get(key);
-//        if (output == null && longDateFormat.get(key.toUpperCase()) != null ) {
-//            String format = longDateFormat.get(key.toUpperCase());
-//            Matcher matcher = DATE_PARTS.matcher(format);
-//            while( matcher.find() ){
-//                System.out.println(format.substring(matcher.start(), matcher.end()));
-//            }
-//            output = format.replace(DATE_PARTS, /g, function (val) {
-//                return val.slice(1);
-//            });
-//            longDateFormat.put(key, output);
-//        }
-//        return output;
-//    }
 
-
+    /**
+     * Convert the MomentJS specific date format string e.g. L to a more general date format string e.g. DD/MM/YYYY
+     */
+    public String longDateFormat(String format){
+        Map<String, String> longDateFormat = getLongDateFormat();
+        String output = longDateFormat.get(format);
+        if (output == null && longDateFormat.get(format.toUpperCase()) != null ) {
+            output = longDateFormat.get(format.toUpperCase());
+        }
+        return output;
+    }
 
 
     /*
 
-        meridiem : function (hours, minutes, isLower) {
-            if (hours > 11) {
-                return isLower ? 'pm' : 'PM';
-            } else {
-                return isLower ? 'am' : 'AM';
-            }
-        },
 
-        _calendar : {
-            sameDay : '[Today at] LT',
-                    nextDay : '[Tomorrow at] LT',
-                    nextWeek : 'dddd [at] LT',
-                    lastDay : '[Yesterday at] LT',
-                    lastWeek : '[last] dddd [at] LT',
-                    sameElse : 'L'
-        },
+
+        ,
         calendar : function (key, mom) {
             var output = this._calendar[key];
             return typeof output === 'function' ? output.apply(mom) : output;
