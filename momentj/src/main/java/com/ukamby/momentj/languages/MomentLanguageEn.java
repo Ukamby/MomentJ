@@ -80,6 +80,15 @@ public class MomentLanguageEn extends MomentLanguage {
     }
 
     @Override
+    public String getMeridiem(int hours, int minutes, boolean isLower) {
+        if (hours > 11) {
+            return isLower ? "pm" : "PM";
+        } else {
+            return isLower ? "am" : "AM";
+        }
+    }
+
+    @Override
     String[] getMonths() {
         return months;
     }
@@ -112,15 +121,6 @@ public class MomentLanguageEn extends MomentLanguage {
     @Override
     Map<String, String> getCalendar() {
         return calendar;
-    }
-
-    @Override
-    public String getMeridiem(int hours, int minutes, boolean isLower) {
-        if (hours > 11) {
-            return isLower ? "pm" : "PM";
-        } else {
-            return isLower ? "am" : "AM";
-        }
     }
 
     @Override

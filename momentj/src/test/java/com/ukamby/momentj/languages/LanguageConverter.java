@@ -1,13 +1,8 @@
 package com.ukamby.momentj.languages;
 
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,6 +14,9 @@ import java.util.regex.Pattern;
  */
 public class LanguageConverter {
     private static final Pattern languageSpecifierLine = Pattern.compile(".+\\.lang\\('(.+)'.+");
+
+    private static final String monthsInput = ".+months : \"(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)\"\\.split\\(\"_\"\\),";
+    private static final String monthsOutput = "\tprivate static String\\[\\] months = new String\\[\\]\\{\"$1\",\"$2\",\"$3\",\"$4\",\"$5\",\"$6\",\"$7\",\"$8\",\"$9\",\"$10\",\"$11\",\"$12\"\\};";
 
 
     public static void main(String[] args) throws IOException {
@@ -41,15 +39,31 @@ public class LanguageConverter {
             Date writeDate = new Date();
             String formattedDate = writeDate.getDay() + "/" + writeDate.getMonth() + "/" + writeDate.getYear();
 
-            String filteredLines = String.format(classPrefix, language, formattedDate, className);
+            String formattedClassPrefix = String.format(classPrefix, language, formattedDate, className);
 
             List<String> outputLines = new ArrayList<>();
-            outputLines.addAll(Arrays.asList(filteredLines.split("\\n")));
+            outputLines.addAll(Arrays.asList(formattedClassPrefix.split("\\n")));
+
+            for (String line : lines) {
+                if( line.matches(monthsInput) ){
+                    outputLines.add(line.replaceAll(monthsInput, monthsOutput));
+                }
+            }
+
+//            private static final String[] months = new String[]{"January","February","March","April","May","June","July","August","September","October","November","December"};
+//            private static final String[] monthsShort = new String[]{"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"};
+//            private static final String[] weekdays = new String[]{"Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"};
+//            private static final String[] weekdaysShort = new String[]{"Sun","Mon","Tue","Wed","Thu","Fri","Sat"};
+//            private static final String[] weekdaysMin = new String[]{"Su","Mo","Tu","We","Th","Fr","Sa"};
+//            private static final Map<String, String> longDateFormat = createLongDateFormat();
+//            private static final Map<String, String> calendar = createCalendar();
+//            private static final Map<String, String> relativeTime = createRelativeTime();
+//            private static final Map<String, Integer> week = createWeek();
 
 
-            outputLines.add("}");
+            outputLines.addAll(Arrays.asList(classSuffix.split("\\n")));
 
-            Files.write(outputFile, outputLines, Charset.forName("UTF-8"));
+            Files.write(outputFile, outputLines, Charset.forName("UTF-8"), StandardOpenOption.TRUNCATE_EXISTING);
         }
     }
 
@@ -76,6 +90,53 @@ public class LanguageConverter {
             " * User: luke\n" +
             " * Date: %s\n" +
             " */\n" +
-            "public class %s extends MomentLanguage {\n";
+            "public class %s {\n"; //extends MomentLanguage
 
+    private static String classSuffix = "\n" +
+//            "\n" +
+//            "    @Override\n" +
+//            "    String[] getMonths() {\n" +
+//            "        return months;\n" +
+//            "    }\n" +
+//            "\n" +
+//            "    @Override\n" +
+//            "    String[] getMonthsShort() {\n" +
+//            "        return monthsShort;\n" +
+//            "    }\n" +
+//            "\n" +
+//            "    @Override\n" +
+//            "    String[] getWeekdays() {\n" +
+//            "        return weekdays;\n" +
+//            "    }\n" +
+//            "\n" +
+//            "    @Override\n" +
+//            "    String[] getWeekdaysShort() {\n" +
+//            "        return weekdaysShort;\n" +
+//            "    }\n" +
+//            "\n" +
+//            "    @Override\n" +
+//            "    String[] getWeekdaysMin() {\n" +
+//            "        return weekdaysMin;\n" +
+//            "    }\n" +
+//            "\n" +
+//            "    @Override\n" +
+//            "    Map<String, String> getLongDateFormat() {\n" +
+//            "        return longDateFormat;\n" +
+//            "    }\n" +
+//            "\n" +
+//            "    @Override\n" +
+//            "    Map<String, String> getCalendar() {\n" +
+//            "        return calendar;\n" +
+//            "    }\n" +
+//            "\n" +
+//            "    @Override\n" +
+//            "    Map<String, String> getRelativeTime() {\n" +
+//            "        return relativeTime;\n" +
+//            "    }\n" +
+//            "\n" +
+//            "    @Override\n" +
+//            "    Map<String, Integer> getWeek() {\n" +
+//            "        return week;\n" +
+//            "    }\n" +
+            "}\n";
 }
