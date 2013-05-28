@@ -1,5 +1,8 @@
 package com.ukamby.momentj;
 
+import com.ukamby.momentj.languages.MomentLanguage;
+import com.ukamby.momentj.languages.MomentLanguageEn;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.regex.Pattern;
@@ -15,10 +18,18 @@ import java.util.regex.Pattern;
  */
 public class Moment {
 	public static final String VERSION = "0.1";
-	
+	private static MomentLanguage lang = new MomentLanguageEn();
+
     private long value;
     private Moment(long value) {
         this.value = value;
+    }
+
+    public static void setLanguage(MomentLanguage language){
+        lang = language;
+    }
+    public static MomentLanguage getLanguage(){
+        return lang;
     }
 
     /**
@@ -29,6 +40,15 @@ public class Moment {
      */
     public static Moment moment(long epochMillis) {
         return new Moment(epochMillis);
+    }
+
+    /**
+     * Create a clone moment (a new instance of moment at the same point in time as the given moment).
+     *
+     * @param moment The moment to clone.
+     */
+    public static Moment moment(Moment moment) {
+        return new Moment(moment.toUnixEpoch());
     }
 
     /**
@@ -457,5 +477,21 @@ public class Moment {
 
     public int day() {
         return 0;  //Return the weekday portion as an integer 0-6 where 0 = Sunday
+    }
+
+    public Moment add(String measure, int amount) {
+        if( "d".equals(measure) ){
+            return new Moment(value + amount * 24 * 60 * 60 * 1000);
+        }else{
+            throw new RuntimeException("not implemented");
+        }
+    }
+
+    public int dayOfYear() {
+        return 0;  //To change body of created methods use File | Settings | File Templates.
+    }
+
+    public int year() {
+        return 0;//To change body of created methods use File | Settings | File Templates.
     }
 }
