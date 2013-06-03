@@ -17,7 +17,14 @@ public class LanguageConverter {
 
     private static final String monthsInput = ".+months : \"(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)\"\\.split\\(\"_\"\\),";
     private static final String monthsOutput = "\tprivate static String\\[\\] months = new String\\[\\]\\{\"$1\",\"$2\",\"$3\",\"$4\",\"$5\",\"$6\",\"$7\",\"$8\",\"$9\",\"$10\",\"$11\",\"$12\"\\};";
-
+    private static final String monthsShortInput = ".+monthsShort : \"(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)\"\\.split\\(\"_\"\\),";
+    private static final String monthsShortOutput = "\tprivate static final String[] monthsShort = new String[]{\"$1\",\"$2\",\"$3\",\"$4\",\"$5\",\"$6\",\"$7\",\"$8\",\"$9\",\"$10\",\"$11\",\"$12\"};";
+    private static final String weekdaysInput = ".+weekdays : \"(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)\"\\.split\\(\"_\"\\),";
+    private static final String weekdaysOutput = "\tprivate static final String[] weekdays = new String[]{\"$1\",\"$2\",\"$3\",\"$4\",\"$5\",\"$6\",\"$7\"};";
+    private static final String weekdaysShortInput = ".+weekdaysShort : \"(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)\"\\.split\\(\"_\"\\),";
+    private static final String weekdaysShortOutput = "\tprivate static final String[] weekdaysShort = new String[]{\"$1\",\"$2\",\"$3\",\"$4\",\"$5\",\"$6\",\"$7\"};";
+    private static final String weekdaysMinInput = ".+weekdaysMin : \"(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)\"\\.split\\(\"_\"\\),";
+    private static final String weekdaysMinOutput = "\tprivate static final String[] weekdaysMin = new String[]{\"$1\",\"$2\",\"$3\",\"$4\",\"$5\",\"$6\",\"$7\"};";
 
     public static void main(String[] args) throws IOException {
         String inputDir = args[0]; //e.g. /Users/luke/MomentJ/momentj/src/test/resources/languages
@@ -37,7 +44,7 @@ public class LanguageConverter {
             System.out.println("output file = " + outputFile);
 
             Date writeDate = new Date();
-            String formattedDate = writeDate.getDay() + "/" + writeDate.getMonth() + "/" + writeDate.getYear();
+            String formattedDate = writeDate.getDate() + "/" + (1 + writeDate.getMonth()) + "/" + (1900 + writeDate.getYear());
 
             String formattedClassPrefix = String.format(classPrefix, language, formattedDate, className);
 
@@ -48,13 +55,20 @@ public class LanguageConverter {
                 if( line.matches(monthsInput) ){
                     outputLines.add(line.replaceAll(monthsInput, monthsOutput));
                 }
+                if( line.matches(monthsShortInput) ){
+                    outputLines.add(line.replaceAll(monthsShortInput, monthsShortOutput));
+                }
+                if( line.matches(weekdaysInput) ){
+                    outputLines.add(line.replaceAll(weekdaysInput, weekdaysOutput));
+                }
+                if( line.matches(weekdaysShortInput) ){
+                    outputLines.add(line.replaceAll(weekdaysShortInput, weekdaysShortOutput));
+                }
+                if( line.matches(weekdaysMinInput) ){
+                    outputLines.add(line.replaceAll(weekdaysMinInput, weekdaysMinOutput));
+                }
             }
 
-//            private static final String[] months = new String[]{"January","February","March","April","May","June","July","August","September","October","November","December"};
-//            private static final String[] monthsShort = new String[]{"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"};
-//            private static final String[] weekdays = new String[]{"Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"};
-//            private static final String[] weekdaysShort = new String[]{"Sun","Mon","Tue","Wed","Thu","Fri","Sat"};
-//            private static final String[] weekdaysMin = new String[]{"Su","Mo","Tu","We","Th","Fr","Sa"};
 //            private static final Map<String, String> longDateFormat = createLongDateFormat();
 //            private static final Map<String, String> calendar = createCalendar();
 //            private static final Map<String, String> relativeTime = createRelativeTime();
@@ -63,7 +77,7 @@ public class LanguageConverter {
 
             outputLines.addAll(Arrays.asList(classSuffix.split("\\n")));
 
-            Files.write(outputFile, outputLines, Charset.forName("UTF-8"), StandardOpenOption.TRUNCATE_EXISTING);
+            Files.write(outputFile, outputLines, Charset.forName("UTF-8"), StandardOpenOption.CREATE);
         }
     }
 

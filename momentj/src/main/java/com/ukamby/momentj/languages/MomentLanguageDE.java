@@ -8,9 +8,13 @@ import java.util.Map;
  * de language constants for MomentJ.
  *
  * User: luke
- * Date: 3/4/113
+ * Date: 4/6/2013
  */
 public class MomentLanguageDE {
 	private static String[] months = new String[]{"Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"};
+	private static final String[] monthsShort = new String[]{"Jan.","Febr.","Mrz.","Apr.","Mai","Jun.","Jul.","Aug.","Sept.","Okt.","Nov.","Dez."};
+	private static final String[] weekdays = new String[]{"Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag"};
+	private static final String[] weekdaysShort = new String[]{"So.","Mo.","Di.","Mi.","Do.","Fr.","Sa."};
+	private static final String[] weekdaysMin = new String[]{"So","Mo","Di","Mi","Do","Fr","Sa"};
 
 }
