@@ -32,16 +32,11 @@ public class LanguageConverter {
 
         Path inputDirFiles = Paths.get(inputDir);
         for( Path inputPath : Files.newDirectoryStream(inputDirFiles, "*.js")) {
-//            System.out.println("-------------------------------");
-
             List<String> lines = Files.readAllLines(inputPath, Charset.forName("UTF-8"));
             String language = getLanguage(lines);
-//            System.out.println("language = " + language);
 
             String className = "MomentLanguage" + language.toUpperCase().replace("-", "_");
             Path outputFile = Paths.get(outputDir, className + ".java");
-//            System.out.println("input file = " + inputPath);
-//            System.out.println("output file = " + outputFile);
 
             Date writeDate = new Date();
             String formattedDate = writeDate.getDate() + "/" + (1 + writeDate.getMonth()) + "/" + (1900 + writeDate.getYear());
@@ -73,6 +68,56 @@ public class LanguageConverter {
                     outputLines.add(line.replaceAll(weekdaysMinInput, weekdaysMinOutput));
                     matchedWeekdaysMin = true;
                 }
+            }
+
+            outputLines.add("");
+            if( matchedMonths ){
+                outputLines.add("    @Override");
+                outputLines.add("    String[] getMonths() {");
+                outputLines.add("        return months;");
+                outputLines.add("    }");
+            }else{
+                outputLines.add("    abstract String[] getMonths();");
+            }
+
+            outputLines.add("");
+            if( matchedMonthsShort ){
+                outputLines.add("    @Override");
+                outputLines.add("    String[] getMonthsShort() {");
+                outputLines.add("        return monthsShort;");
+                outputLines.add("    }");
+            }else{
+                outputLines.add("    abstract String[] getMonthsShort();");
+            }
+
+            outputLines.add("");
+            if( matchedWeekdays ){
+                outputLines.add("    @Override");
+                outputLines.add("    String[] getWeekdays() {");
+                outputLines.add("        return weekdays;");
+                outputLines.add("    }");
+            }else{
+                outputLines.add("    abstract String[] getWeekdays();");
+            }
+
+            outputLines.add("");
+            if( matchedWeekdaysShort ){
+                outputLines.add("    @Override");
+                outputLines.add("    String[] getWeekdaysShort() {");
+                outputLines.add("        return weekdaysShort;");
+                outputLines.add("    }");
+            }else{
+                outputLines.add("    abstract String[] getWeekdaysShort();");
+            }
+
+            outputLines.add("");
+            if( matchedWeekdaysMin ){
+                outputLines.add("    @Override");
+                outputLines.add("    String[] getWeekdaysMin() {");
+                outputLines.add("        return weekdaysMin;");
+                outputLines.add("    }");
+            }else{
+                outputLines.add("    abstract String[] getWeekdaysMin();");
             }
 
             if( !matchedMonths || !matchedMonthsShort || !matchedWeekdays || !matchedWeekdaysShort || !matchedWeekdaysMin ){
@@ -115,35 +160,9 @@ public class LanguageConverter {
             " * User: luke\n" +
             " * Date: %s\n" +
             " */\n" +
-            "public class %s {\n"; //extends MomentLanguage
+            "public abstract class %s extends MomentLanguage {\n"; //extends MomentLanguage
 
     private static String classSuffix = "\n" +
-//            "\n" +
-//            "    @Override\n" +
-//            "    String[] getMonths() {\n" +
-//            "        return months;\n" +
-//            "    }\n" +
-//            "\n" +
-//            "    @Override\n" +
-//            "    String[] getMonthsShort() {\n" +
-//            "        return monthsShort;\n" +
-//            "    }\n" +
-//            "\n" +
-//            "    @Override\n" +
-//            "    String[] getWeekdays() {\n" +
-//            "        return weekdays;\n" +
-//            "    }\n" +
-//            "\n" +
-//            "    @Override\n" +
-//            "    String[] getWeekdaysShort() {\n" +
-//            "        return weekdaysShort;\n" +
-//            "    }\n" +
-//            "\n" +
-//            "    @Override\n" +
-//            "    String[] getWeekdaysMin() {\n" +
-//            "        return weekdaysMin;\n" +
-//            "    }\n" +
-//            "\n" +
 //            "    @Override\n" +
 //            "    Map<String, String> getLongDateFormat() {\n" +
 //            "        return longDateFormat;\n" +

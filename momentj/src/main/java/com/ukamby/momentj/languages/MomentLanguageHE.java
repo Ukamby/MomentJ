@@ -10,11 +10,36 @@ import java.util.Map;
  * User: luke
  * Date: 4/6/2013
  */
-public class MomentLanguageHE {
+public abstract class MomentLanguageHE extends MomentLanguage {
 	private static String[] months = new String[]{"ינואר","פברואר","מרץ","אפריל","מאי","יוני","יולי","אוגוסט","ספטמבר","אוקטובר","נובמבר","דצמבר"};
 	private static final String[] monthsShort = new String[]{"ינו׳","פבר׳","מרץ","אפר׳","מאי","יוני","יולי","אוג׳","ספט׳","אוק׳","נוב׳","דצמ׳"};
 	private static final String[] weekdays = new String[]{"ראשון","שני","שלישי","רביעי","חמישי","שישי","שבת"};
 	private static final String[] weekdaysShort = new String[]{"א׳","ב׳","ג׳","ד׳","ה׳","ו׳","ש׳"};
 	private static final String[] weekdaysMin = new String[]{"א","ב","ג","ד","ה","ו","ש"};
+
+    @Override
+    String[] getMonths() {
+        return months;
+    }
+
+    @Override
+    String[] getMonthsShort() {
+        return monthsShort;
+    }
+
+    @Override
+    String[] getWeekdays() {
+        return weekdays;
+    }
+
+    @Override
+    String[] getWeekdaysShort() {
+        return weekdaysShort;
+    }
+
+    @Override
+    String[] getWeekdaysMin() {
+        return weekdaysMin;
+    }
 
 }
