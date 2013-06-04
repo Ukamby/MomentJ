@@ -15,15 +15,15 @@ import java.util.regex.Pattern;
 public class LanguageConverter {
     private static final Pattern languageSpecifierLine = Pattern.compile(".+\\.lang\\('(.+)'.+");
 
-    private static final String monthsInput = ".+months : \"(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)\"\\.split\\(\"_\"\\),";
+    private static final String monthsInput = ".+months\\s*[:=]\\s*[\"'](.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)[\"']\\s*\\.split\\([\"']_[\"']\\).+";
     private static final String monthsOutput = "\tprivate static String\\[\\] months = new String\\[\\]\\{\"$1\",\"$2\",\"$3\",\"$4\",\"$5\",\"$6\",\"$7\",\"$8\",\"$9\",\"$10\",\"$11\",\"$12\"\\};";
-    private static final String monthsShortInput = ".+monthsShort : \"(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)\"\\.split\\(\"_\"\\),";
+    private static final String monthsShortInput = ".+monthsShort\\s*[:=]\\s*[\"'](.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)[\"']\\s*\\.split\\([\"']_[\"']\\).+";
     private static final String monthsShortOutput = "\tprivate static final String[] monthsShort = new String[]{\"$1\",\"$2\",\"$3\",\"$4\",\"$5\",\"$6\",\"$7\",\"$8\",\"$9\",\"$10\",\"$11\",\"$12\"};";
-    private static final String weekdaysInput = ".+weekdays : \"(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)\"\\.split\\(\"_\"\\),";
+    private static final String weekdaysInput = ".+weekdays\\s*[:=]\\s*[\"'](.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)[\"']\\s*\\.split\\([\"']_[\"']\\).+";
     private static final String weekdaysOutput = "\tprivate static final String[] weekdays = new String[]{\"$1\",\"$2\",\"$3\",\"$4\",\"$5\",\"$6\",\"$7\"};";
-    private static final String weekdaysShortInput = ".+weekdaysShort : \"(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)\"\\.split\\(\"_\"\\),";
+    private static final String weekdaysShortInput = ".+weekdaysShort\\s*[:=]\\s*[\"'](.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)[\"']\\s*\\.split\\([\"']_[\"']\\).+";
     private static final String weekdaysShortOutput = "\tprivate static final String[] weekdaysShort = new String[]{\"$1\",\"$2\",\"$3\",\"$4\",\"$5\",\"$6\",\"$7\"};";
-    private static final String weekdaysMinInput = ".+weekdaysMin : \"(.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)\"\\.split\\(\"_\"\\),";
+    private static final String weekdaysMinInput = ".+weekdaysMin\\s*[:=]\\s*[\"'](.+)_(.+)_(.+)_(.+)_(.+)_(.+)_(.+)[\"']\\s*\\.split\\([\"']_[\"']\\).+";
     private static final String weekdaysMinOutput = "\tprivate static final String[] weekdaysMin = new String[]{\"$1\",\"$2\",\"$3\",\"$4\",\"$5\",\"$6\",\"$7\"};";
 
     public static void main(String[] args) throws IOException {
@@ -32,16 +32,16 @@ public class LanguageConverter {
 
         Path inputDirFiles = Paths.get(inputDir);
         for( Path inputPath : Files.newDirectoryStream(inputDirFiles, "*.js")) {
-            System.out.println("-------------------------------");
+//            System.out.println("-------------------------------");
 
             List<String> lines = Files.readAllLines(inputPath, Charset.forName("UTF-8"));
             String language = getLanguage(lines);
-            System.out.println("language = " + language);
+//            System.out.println("language = " + language);
 
             String className = "MomentLanguage" + language.toUpperCase().replace("-", "_");
             Path outputFile = Paths.get(outputDir, className + ".java");
-            System.out.println("input file = " + inputPath);
-            System.out.println("output file = " + outputFile);
+//            System.out.println("input file = " + inputPath);
+//            System.out.println("output file = " + outputFile);
 
             Date writeDate = new Date();
             String formattedDate = writeDate.getDate() + "/" + (1 + writeDate.getMonth()) + "/" + (1900 + writeDate.getYear());
@@ -51,23 +51,34 @@ public class LanguageConverter {
             List<String> outputLines = new ArrayList<>();
             outputLines.addAll(Arrays.asList(formattedClassPrefix.split("\\n")));
 
+            boolean matchedMonths = false, matchedMonthsShort = false, matchedWeekdays = false, matchedWeekdaysShort = false, matchedWeekdaysMin = false;
             for (String line : lines) {
                 if( line.matches(monthsInput) ){
                     outputLines.add(line.replaceAll(monthsInput, monthsOutput));
+                    matchedMonths = true;
                 }
                 if( line.matches(monthsShortInput) ){
                     outputLines.add(line.replaceAll(monthsShortInput, monthsShortOutput));
+                    matchedMonthsShort = true;
                 }
                 if( line.matches(weekdaysInput) ){
                     outputLines.add(line.replaceAll(weekdaysInput, weekdaysOutput));
+                    matchedWeekdays = true;
                 }
                 if( line.matches(weekdaysShortInput) ){
                     outputLines.add(line.replaceAll(weekdaysShortInput, weekdaysShortOutput));
+                    matchedWeekdaysShort = true;
                 }
                 if( line.matches(weekdaysMinInput) ){
                     outputLines.add(line.replaceAll(weekdaysMinInput, weekdaysMinOutput));
+                    matchedWeekdaysMin = true;
                 }
             }
+
+            if( !matchedMonths || !matchedMonthsShort || !matchedWeekdays || !matchedWeekdaysShort || !matchedWeekdaysMin ){
+                System.out.println("This language file needs special treatment of the basic constants: " + className);
+            }
+
 
 //            private static final Map<String, String> longDateFormat = createLongDateFormat();
 //            private static final Map<String, String> calendar = createCalendar();

@@ -11,6 +11,10 @@ import java.util.Map;
  * Date: 4/6/2013
  */
 public class MomentLanguageET {
+	private static String[] months = new String[]{"jaanuar","veebruar","märts","aprill","mai","juuni","juuli","august","september","oktoober","november","detsember"};
+	private static final String[] monthsShort = new String[]{"jaan","veebr","märts","apr","mai","juuni","juuli","aug","sept","okt","nov","dets"};
+	private static final String[] weekdays = new String[]{"pühapäev","esmaspäev","teisipäev","kolmapäev","neljapäev","reede","laupäev"};
 	private static final String[] weekdaysShort = new String[]{"P","E","T","K","N","R","L"};
+	private static final String[] weekdaysMin = new String[]{"P","E","T","K","N","R","L"};
 
 }
