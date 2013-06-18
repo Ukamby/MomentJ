@@ -8,7 +8,7 @@ import java.util.Map;
  * pt language constants for MomentJ.
  *
  * User: luke
- * Date: 4/6/2013
+ * Date: 18/6/2013
  */
 public abstract class MomentLanguagePT extends MomentLanguage {
 	private static String[] months = new String[]{"Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"};
@@ -16,6 +16,19 @@ public abstract class MomentLanguagePT extends MomentLanguage {
 	private static final String[] weekdays = new String[]{"Domingo","Segunda-feira","Terça-feira","Quarta-feira","Quinta-feira","Sexta-feira","Sábado"};
 	private static final String[] weekdaysShort = new String[]{"Dom","Seg","Ter","Qua","Qui","Sex","Sáb"};
 	private static final String[] weekdaysMin = new String[]{"Dom","2ª","3ª","4ª","5ª","6ª","Sáb"};
+    private static final Map<String, Integer> week = createWeek();
+
+    /**
+     * dow : The first day of the week.
+     * doy : The day number of the beginning of the year for this locale.
+     */
+    private static final Map<String, Integer> createWeek() {
+        Map<String, Integer> map = new HashMap<>();
+        map.put("dow", 0);
+        map.put("doy", 6);
+        return Collections.unmodifiableMap(map);
+    }
+    
 
     @Override
     String[] getMonths() {

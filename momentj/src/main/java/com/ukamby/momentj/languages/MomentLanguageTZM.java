@@ -8,7 +8,7 @@ import java.util.Map;
  * tzm language constants for MomentJ.
  *
  * User: luke
- * Date: 4/6/2013
+ * Date: 18/6/2013
  */
 public abstract class MomentLanguageTZM extends MomentLanguage {
 	private static String[] months = new String[]{"ⵉⵏⵏⴰⵢⵔ","ⴱⵕⴰⵢⵕ","ⵎⴰⵕⵚ","ⵉⴱⵔⵉⵔ","ⵎⴰⵢⵢⵓ","ⵢⵓⵏⵢⵓ","ⵢⵓⵍⵢⵓⵣ","ⵖⵓⵛⵜ","ⵛⵓⵜⴰⵏⴱⵉⵔ","ⴽⵟⵓⴱⵕ","ⵏⵓⵡⴰⵏⴱⵉⵔ","ⴷⵓⵊⵏⴱⵉⵔ"};
@@ -16,6 +16,19 @@ public abstract class MomentLanguageTZM extends MomentLanguage {
 	private static final String[] weekdays = new String[]{"ⴰⵙⴰⵎⴰⵙ","ⴰⵢⵏⴰⵙ","ⴰⵙⵉⵏⴰⵙ","ⴰⴽⵔⴰⵙ","ⴰⴽⵡⴰⵙ","ⴰⵙⵉⵎⵡⴰⵙ","ⴰⵙⵉⴹⵢⴰⵙ"};
 	private static final String[] weekdaysShort = new String[]{"ⴰⵙⴰⵎⴰⵙ","ⴰⵢⵏⴰⵙ","ⴰⵙⵉⵏⴰⵙ","ⴰⴽⵔⴰⵙ","ⴰⴽⵡⴰⵙ","ⴰⵙⵉⵎⵡⴰⵙ","ⴰⵙⵉⴹⵢⴰⵙ"};
 	private static final String[] weekdaysMin = new String[]{"ⴰⵙⴰⵎⴰⵙ","ⴰⵢⵏⴰⵙ","ⴰⵙⵉⵏⴰⵙ","ⴰⴽⵔⴰⵙ","ⴰⴽⵡⴰⵙ","ⴰⵙⵉⵎⵡⴰⵙ","ⴰⵙⵉⴹⵢⴰⵙ"};
+    private static final Map<String, Integer> week = createWeek();
+
+    /**
+     * dow : The first day of the week.
+     * doy : The day number of the beginning of the year for this locale.
+     */
+    private static final Map<String, Integer> createWeek() {
+        Map<String, Integer> map = new HashMap<>();
+        map.put("dow", 0);
+        map.put("doy", 6);
+        return Collections.unmodifiableMap(map);
+    }
+    
 
     @Override
     String[] getMonths() {

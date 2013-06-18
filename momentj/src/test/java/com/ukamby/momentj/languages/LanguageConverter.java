@@ -70,6 +70,27 @@ public class LanguageConverter {
                 }
             }
 
+
+//            outputLines.add("    private static final Map<String, String> longDateFormat = createLongDateFormat();");
+//            outputLines.add("    private static final Map<String, String> calendar = createCalendar();");
+//            outputLines.add("    private static final Map<String, String> relativeTime = createRelativeTime();");
+            outputLines.add("    private static final Map<String, Integer> week = createWeek();");
+            outputLines.add("");
+
+            outputLines.add("    /**");
+            outputLines.add("     * dow : The first day of the week.");
+            outputLines.add("     * doy : The day number of the day in which the first week of the year occurs for this locale.");
+            outputLines.add("     */");
+            outputLines.add("    private static final Map<String, Integer> createWeek() {");
+            outputLines.add("        Map<String, Integer> map = new HashMap<>();");
+            outputLines.add(String.format("        map.put(\"dow\", %s);", getDow(lines, language)));
+            outputLines.add(String.format("        map.put(\"doy\", %s);", getDoy(lines, language)));
+            outputLines.add("        return Collections.unmodifiableMap(map);");
+            outputLines.add("    }");
+            outputLines.add("    ");
+
+
+
             outputLines.add("");
             if( matchedMonths ){
                 outputLines.add("    @Override");
@@ -124,17 +145,28 @@ public class LanguageConverter {
                 System.out.println("This language file needs special treatment of the basic constants: " + className);
             }
 
-
-//            private static final Map<String, String> longDateFormat = createLongDateFormat();
-//            private static final Map<String, String> calendar = createCalendar();
-//            private static final Map<String, String> relativeTime = createRelativeTime();
-//            private static final Map<String, Integer> week = createWeek();
-
-
             outputLines.addAll(Arrays.asList(classSuffix.split("\\n")));
 
             Files.write(outputFile, outputLines, Charset.forName("UTF-8"), StandardOpenOption.CREATE);
         }
+    }
+
+    private static String getDoy(List<String> lines, String locale) {
+        //iterate the lines to find the day of year
+        for( String line : lines ){
+            String trimmed = line.trim();
+            if( trimmed.startsWith("doy") ){
+
+            }
+        }
+        System.out.println("Defaulting on doy for locale " + locale);
+        return "6";
+    }
+
+    private static String getDow(List<String> lines, String locale) {
+        //todo: iterate the lines to find the day of week
+        System.out.println("Defaulting on dow for locale " + locale);
+        return "0";
     }
 
     private static String getLanguage(List<String> lines) {

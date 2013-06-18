@@ -22,6 +22,10 @@ public class MomentLanguageEn extends MomentLanguage {
     private static final Map<String, String> relativeTime = createRelativeTime();
     private static final Map<String, Integer> week = createWeek();
 
+    /**
+     * dow : 0 // Sunday is the first day of the week.
+     * doy : 6 // The week that contains Jan 1st is the first week of the year.
+     */
     private static final Map<String, Integer> createWeek() {
         Map<String, Integer> map = new HashMap<>();
             /*
